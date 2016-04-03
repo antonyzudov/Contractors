@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Импорт контрагентов</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/jquery-ui-1.11.4.custom/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/ui.jqgrid.css" mce_href="css/ui.jqgrid.css" />
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.2.1.min.js"></script>
+    <script type="text/javascript" src="js/i18n/grid.locale-ru.js"></script>
+    <script type="text/javascript" src="js/jquery.jqgrid.min.js"></script>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 30px;
+            font-size: 80%;
+        }
+
+        h1 {
+            background-color: black;
+            color: white;
+            font-size: 16pt;
+        }
+
+        h2 {
+            font-size: 12pt;
+        }
+
+        form {
+            display: block;
+            margin: 20px auto;
+            background: #eee;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 12pt;
+        }
+
+        .progress {
+            position: relative;
+            width: 100%;
+            border: 1px solid #ddd;
+            padding: 1px;
+            border-radius: 3px;
+        }
+
+        .bar {
+            background-color: #B4F5B4;
+            width: 0%;
+            height: 20px;
+            border-radius: 3px;
+        }
+
+        .percent {
+            position: absolute;
+            display: inline-block;
+            top: 3px;
+            left: 48%;
+        }
+    </style>
+</head>
+<body>
+    <header><h1 align="center">Импорт контрагентов</h1></header>
+
+    <form name="fileform" method="post" action="api/clcontractors" enctype="multipart/form-data">
+        <div>
+            <label>
+                Файл выписки:
+            </label>
+            <input name="myfile" type="file" />
+        </div>
+        <div>
+            <input type="submit" value="Загрузить" />
+        </div>
+    </form>
+
+    <div class="progress">
+        <div class="bar"></div>
+        <div class="percent">0%</div>
+    </div>
+
+    <div id="status"></div>
+
+    <div style="position:relative; padding-top:20px;"><table id="cllist"></table></div>
+    <script>
+        jQuery("#cllist").jqGrid({
+            url: "api/clcontractors",
+            datatype: "json",
+            colNames: ['#', 'Наименование', 'ИНН'],
+            colModel: [
+                { name: 'id', index: 'id', width: 20, sorttype: "int" },
+                { name: 'name', index: 'name', width: 350, sorttype: "string" },
+                { name: 'INN', index: 'INN', width: 350, align: "right", sorttype: "string" }
+            ],
+            rowNum: 0,
+            multiselect: false,
+            height:'auto',
+            caption: "Cписок загружаемых контрагентов",
+                ondblClickRow: function (id) {
+                    $(document).ready(function () {
+                        $.getJSON("api/clcontractors/" + id)
+                            .done(function (data) {
+                                $.each(data, function (key, item) {
+                                    jQuery("#clcontrcard").jqGrid('setCell', 1, 2, item.name);
+                                    jQuery("#clcontrcard").jqGrid('setCell', 2, 2, item.INN);
+                                    jQuery("#clcontrcard").jqGrid('setCell', 3, 2, item.KPP);
+                                    jQuery("#clcontrcard").jqGrid('setCell', 4, 2, item.settlement_account);
+                                    jQuery("#clcontrcard").jqGrid('setCell', 5, 2, item.bank);
+                                    jQuery("#clcontrcard").jqGrid('setCell', 6, 2, item.city);
+                                    jQuery("#clcontrcard").jqGrid('setCell', 7, 2, item.corr_account);
+                                    jQuery("#clcontrcard").jqGrid('setCell', 8, 2, item.BIK);
+                                    jQuery("#clcontrcard").jqGrid('setCell', 9, 2, item.full_name);
+                                });
+                            });
+                    });
+                }
+        });
+    </script>
+
+    <script src="http://malsup.github.com/jquery.form.js"></script>
+    <script>
+        (function () {
+
+            var bar = $('.bar');
+            var percent = $('.percent');
+            var status = $('#status');
+
+            $('form').ajaxForm({
+                beforeSend: function () {
+                    status.empty();
+                    var percentVal = '0%';
+                    bar.width(percentVal)
+                    percent.html(percentVal);
+                },
+                uploadProgress: function (event, position, total, percentComplete) {
+                    var percentVal = percentComplete + '%';
+                    bar.width(percentVal)
+                    percent.html(percentVal);
+                },
+                success: function () {
+                    var percentVal = '100%';
+                    bar.width(percentVal)
+                    percent.html(percentVal);
+                },
+                complete: function (xhr) {
+                    status.html(xhr.responseText);
+                    location.reload();
+                }
+            });
+
+        })();
+    </script>
+
+
+    <div style="position:absolute; top: 23%; left: 60%"><table id="clcontrcard"></table></div>
+    <script>
+        jQuery("#clcontrcard").jqGrid({
+            datatype: "local",
+            height: 250,
+            colNames: ['Атрибут', 'Значение'],
+            colModel: [
+                { name: 'atr', index: 'atr', width: 120, sorttype: "string" },
+                { name: 'val', index: 'val', width: 250, sorttype: "string" },
+            ],
+            multiselect: true,
+            caption: "Карточка контрагента",
+        });
+        jQuery("#clcontrcard").jqGrid('addRowData', 1, { atr: "Наименование", val: "" });
+        jQuery("#clcontrcard").jqGrid('addRowData', 2, { atr: "ИНН", val: "" });
+        jQuery("#clcontrcard").jqGrid('addRowData', 3, { atr: "КПП", val: "" });
+        jQuery("#clcontrcard").jqGrid('addRowData', 4, { atr: "р/с", val: "" });
+        jQuery("#clcontrcard").jqGrid('addRowData', 5, { atr: "Банк", val: "" });
+        jQuery("#clcontrcard").jqGrid('addRowData', 6, { atr: "город банка", val: "" });
+        jQuery("#clcontrcard").jqGrid('addRowData', 7, { atr: "к/с", val: "" });
+        jQuery("#clcontrcard").jqGrid('addRowData', 8, { atr: "БИК", val: "" });
+        jQuery("#clcontrcard").jqGrid('addRowData', 9, { atr: "Комментарии", val: "" });
+    </script>
+
+    <button style="position:absolute; top: 52%; left: 72%; font-size: 12pt;" onclick="importcontractors();"> Перенести в текущий список </button>
+    <script>
+        function importcontractors() {
+            $.ajax({
+                type: "POST",
+                url: "api/Contractors"
+            });
+            location.reload();
+        }
+    </script>
+
+    <button style="position:absolute; top: 57%; left: 72%; font-size: 12pt;" onclick="location.href='list.html';"> Перейти к текущему списку </button>
+</body>
+</html>

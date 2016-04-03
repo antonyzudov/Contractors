@@ -1,5 +1,4 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -33,7 +32,8 @@
     <div style="position:relative; padding-top:20px;"><table id="mainlist" class="mainlistclass"></table></div>
     <script>
         jQuery("#mainlist").jqGrid({
-            datatype: "local",
+            url: "api/contractors",
+            datatype: "json",
             colNames: ['№', 'Наименование', 'ИНН'],
             colModel: [
                 { name: 'id', index: 'id', width: 20, sorttype: "int" },

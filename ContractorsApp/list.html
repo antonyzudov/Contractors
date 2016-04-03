@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" media="screen" href="css/ui.jqgrid.css" mce_href="css/ui.jqgrid.css" />
     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.2.1.min.js"></script>
     <script type="text/javascript" src="js/i18n/grid.locale-ru.js"></script>
-    <script type="text/javascript" src="js/jquery.jqgrid.min.js"></script>
+    <script type="text/javascript" src="js/jquery.jqgrid.min.js"></script>    
     <style>
         html, body {
             margin: 0;
@@ -29,65 +29,12 @@
 </head>
 <body>
     <header><h1 align="center">Репозиторий контрагентов</h1></header>
-    <div style="position:relative; padding-top:20px;"><table id="mainlist" class="mainlistclass"></table></div>
-    <script>
-        jQuery("#mainlist").jqGrid({
-            url: "api/contractors",
-            datatype: "json",
-            colNames: ['№', 'Наименование', 'ИНН'],
-            colModel: [
-                { name: 'id', index: 'id', width: 20, sorttype: "int" },
-                { name: 'name', index: 'name', width: 350, sorttype: "string" },
-                { name: 'INN', index: 'INN', width: 350, align: "right", sorttype: "string" }
-            ],
-            rowNum: 0,
-            multiselect: false,
-            height: 'auto',
-            caption: "Текущий список контрагентов",
-            ondblClickRow: function (id) {
-                $(document).ready(function () {
-                    $.getJSON("api/contractors/" + id)
-                        .done(function (data) {
-                            $.each(data, function (key, item) {
-                                jQuery("#contrcard").jqGrid('setCell', 1, 2, item.name);
-                                jQuery("#contrcard").jqGrid('setCell', 2, 2, item.INN);
-                                jQuery("#contrcard").jqGrid('setCell', 3, 2, item.KPP);
-                                jQuery("#contrcard").jqGrid('setCell', 4, 2, item.settlement_account);
-                                jQuery("#contrcard").jqGrid('setCell', 5, 2, item.bank);
-                                jQuery("#contrcard").jqGrid('setCell', 6, 2, item.city);
-                                jQuery("#contrcard").jqGrid('setCell', 7, 2, item.corr_account);
-                                jQuery("#contrcard").jqGrid('setCell', 8, 2, item.BIK);
-                                jQuery("#contrcard").jqGrid('setCell', 9, 2, item.full_name);
-                            });
-                        });
-                });
-            }
-        });
-    </script>
 
-    <div style="position:absolute; top: 12%; left: 60%"><table id="contrcard" class="cardclass"></table></div>
-    <script>
-        jQuery("#contrcard").jqGrid({
-            datatype: "local",
-            height: 250,
-            colNames: ['Атрибут', 'Значение'],
-            colModel: [
-                { name: 'atr', index: 'atr', width: 120, sorttype: "string" },
-                { name: 'val', index: 'val', width: 250, sorttype: "string" },
-            ],
-            multiselect: true,
-            caption: "Карточка контрагента",
-        });
-        jQuery("#contrcard").jqGrid('addRowData', 1, { atr: "Наименование", val: ""} );
-        jQuery("#contrcard").jqGrid('addRowData', 2, { atr: "ИНН", val: ""} );
-        jQuery("#contrcard").jqGrid('addRowData', 3, { atr: "КПП", val: "" });
-        jQuery("#contrcard").jqGrid('addRowData', 4, { atr: "р/с", val: "" });
-        jQuery("#contrcard").jqGrid('addRowData', 5, { atr: "Банк", val: "" });
-        jQuery("#contrcard").jqGrid('addRowData', 6, { atr: "город банка", val: "" });
-        jQuery("#contrcard").jqGrid('addRowData', 7, { atr: "к/с", val: "" });
-        jQuery("#contrcard").jqGrid('addRowData', 8, { atr: "БИК", val: "" });
-        jQuery("#contrcard").jqGrid('addRowData', 9, { atr: "Комментарии", val: "" });
-    </script>
+    <div style="position:relative; padding-top:20px;"><table id="mainlist" class="mainlistclass"></table></div>
+    <script type="text/javascript" src="Scripts/tables/mainlist.js"></script>
+
+    <div style="position:absolute; top: 12%; left: 60%"><table id="contrcard" class="cardclass"></table></div>    
+    <script type="text/javascript" src="Scripts/tables/contrcard.js"></script>
 
     <button style="position:absolute; top: 42%; left: 75%; font-size: 12pt;" onclick="location.href='import.html';"> Перейти к импорту </button>
 </body>

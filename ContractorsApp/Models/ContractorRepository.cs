@@ -46,12 +46,11 @@ namespace ContractorsApp.Models
         {
             await WithConnection(async c =>
             {
-                await c.ExecuteAsync(
+                return await c.ExecuteAsync(
                 @"insert into dbo.contractors (NAME, INN, KPP, settlement_account, bank, city, corr_account, BIK, full_name)
                   values (@name, @inn, @KPP, @settlement_account, @bank, @city, @corr_account, @BIK, @full_name)"
                 , list
                 );
-                return 1;
             });
 
         }

@@ -1,0 +1,15 @@
+﻿html, body {
+    margin: 0;
+    padding: 30px;
+    font-size: 80%;
+}
+
+h1 {
+    background-color: black;
+    color: white;
+    font-size: 16pt;
+}
+
+.mainlistclass, .cardclass {
+    font-size: 10pt;
+}

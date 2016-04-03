@@ -241,12 +241,14 @@
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="css\importstyles.css" />
     <Content Include="css\jquery-ui-1.11.4.custom\jquery-ui.min.css" />
     <Content Include="css\jquery-ui-1.11.4.custom\jquery-ui.min.js" />
     <Content Include="css\jquery-ui-1.11.4.custom\jquery-ui.structure.css" />
     <Content Include="css\jquery-ui-1.11.4.custom\jquery-ui.structure.min.css" />
     <Content Include="css\jquery-ui-1.11.4.custom\jquery-ui.theme.css" />
     <Content Include="css\jquery-ui-1.11.4.custom\jquery-ui.theme.min.css" />
+    <Content Include="css\mainstyles.css" />
     <Content Include="css\ui.jqgrid-bootstrap-ui.css" />
     <Content Include="css\ui.jqgrid-bootstrap.css" />
     <Content Include="css\ui.jqgrid.css" />

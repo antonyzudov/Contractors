@@ -1,0 +1,46 @@
+﻿html, body {
+    margin: 0;
+    padding: 30px;
+    font-size: 80%;
+}
+
+h1 {
+    background-color: black;
+    color: white;
+    font-size: 16pt;
+}
+
+h2 {
+    font-size: 12pt;
+}
+
+form {
+    display: block;
+    margin: 20px auto;
+    background: #eee;
+    border-radius: 10px;
+    padding: 15px;
+    font-size: 12pt;
+}
+
+.progress {
+    position: relative;
+    width: 100%;
+    border: 1px solid #ddd;
+    padding: 1px;
+    border-radius: 3px;
+}
+
+.bar {
+    background-color: #B4F5B4;
+    width: 0%;
+    height: 20px;
+    border-radius: 3px;
+}
+
+.percent {
+    position: absolute;
+    display: inline-block;
+    top: 3px;
+    left: 48%;
+}
